@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Vite has some bug when the config file uses .ts, it generates some temp files in the root directory
+vite.config.ts.*
