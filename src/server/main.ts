@@ -1,6 +1,8 @@
+import "dotenv/config";
 import express from "express";
 import ViteExpress from "vite-express";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import type { UserAuth } from "./types/UserAuth";
 import type { User } from "./types/User";
@@ -10,6 +12,9 @@ const app = express();
 app.use(express.json());
 
 const userDb = new Map<string, User>();
+
+const A_DAY_IN_SECONDS = 24 * 60 * 60;
+const { SECRET_KEY } = process.env;
 
 app.post("/register", (req, res) => {
   const { username, password }: UserAuth = req.body;
@@ -45,8 +50,13 @@ app.post("/login", (req, res) => {
     });
   }
 
+  const token = jwt.sign(user, SECRET_KEY, {
+    expiresIn: A_DAY_IN_SECONDS,
+  });
+
   res.status(200).send({
-    token: "",
+    token,
+    expiresIn: A_DAY_IN_SECONDS,
   });
 });
 

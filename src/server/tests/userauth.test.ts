@@ -42,6 +42,7 @@ describe("User Auth:", () => {
 
     expect(data).toEqual({
       token: expect.any(String),
+      expiresIn: expect.any(Number),
     });
   });
 
@@ -53,7 +54,7 @@ describe("User Auth:", () => {
       body: JSON.stringify(nonExistentUser),
       headers: { "Content-Type": "application/json" },
     })
-      .expectStatus(400)
+      .expectStatus(404)
       .expectBody({
         message: `${nonExistentUser.username} does not exist! Please register first.`,
       });
