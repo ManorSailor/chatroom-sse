@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { makeFetch } from "supertest-fetch";
 
-import ViteExpress from "../main";
+import ViteExpress from "../server";
 import type { UserAuth } from "../types/UserAuth";
 
 const fetch = makeFetch(ViteExpress);

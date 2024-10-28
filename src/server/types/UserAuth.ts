@@ -3,4 +3,9 @@ type UserAuth = {
   password: string;
 };
 
-export type { UserAuth };
+type AuthToken = {
+  token: string;
+  expiresIn: number;
+};
+
+export type { UserAuth, AuthToken };
