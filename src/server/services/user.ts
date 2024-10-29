@@ -12,12 +12,15 @@ const db = new Map<string, User>();
 const { SECRET_KEY = "test-secret" } = process.env;
 const A_DAY_IN_SECONDS = 24 * 60 * 60;
 
-function register({ username, password }: UserAuth) {
+function register({ username, password }: UserAuth): User {
   if (db.has(username)) {
     throw new AuthError("This username is taken. Please choose another.");
   }
 
-  db.set(username, { username, password: bcrypt.hashSync(password) });
+  const user: User = { username, password: bcrypt.hashSync(password) };
+  db.set(username, user);
+
+  return user;
 }
 
 function login({ username, password }: UserAuth): AuthToken {

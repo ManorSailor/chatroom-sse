@@ -10,26 +10,25 @@ const app = express();
 app.use(express.json());
 
 app.post("/register", (req, res) => {
-  const user: UserAuth = req.body;
+  const userInfo: UserAuth = req.body;
 
   try {
-    UserService.register(user);
+    const user = UserService.register(userInfo);
+    res.status(201).send({
+      message: `Welcome aboard, ${user.username}!`,
+    });
   } catch (error) {
     if (error instanceof AuthError) {
       res.status(409).send({ message: error.message });
     }
   }
-
-  res.status(201).send({
-    message: `Welcome aboard, ${user.username}!`,
-  });
 });
 
 app.post("/login", (req, res) => {
-  const user: UserAuth = req.body;
+  const userInfo: UserAuth = req.body;
 
   try {
-    const authToken = UserService.login(user);
+    const authToken = UserService.login(userInfo);
     res.status(200).send(authToken);
   } catch (error) {
     if (error instanceof NotFoundError) {
