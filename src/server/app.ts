@@ -1,6 +1,6 @@
 import express from "express";
 
-import * as UserService from "./services/user";
+import * as UserService from "./services/user.service";
 import { AuthError, NotFoundError } from "./exceptions/exceptions";
 
 import type { UserAuth } from "./types/UserAuth";
