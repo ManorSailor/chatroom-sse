@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { randomUUID } from "crypto";
 
 import { AuthError, NotFoundError } from "../exceptions/exceptions";
 
@@ -17,7 +18,11 @@ function register({ username, password }: UserAuth): User {
     throw new AuthError("This username is taken. Please choose another.");
   }
 
-  const user: User = { username, password: bcrypt.hashSync(password) };
+  const user: User = {
+    id: randomUUID(),
+    username,
+    password: bcrypt.hashSync(password),
+  };
   db.set(username, user);
 
   return user;
