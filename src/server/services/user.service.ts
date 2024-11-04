@@ -2,10 +2,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { randomUUID } from "crypto";
 
-import { AuthError, NotFoundError } from "../exceptions/exceptions";
+import { AuthError, NotFoundError } from "@/server/exceptions/exceptions";
 
-import type { User } from "../types/User";
-import type { AuthToken, UserAuth } from "../types/UserAuth";
+import type { User } from "@/server/types/User";
+import type { AuthToken, UserAuth } from "@/server/types/UserAuth";
 
 // TODO: Use a proper database
 const db = new Map<string, User>();

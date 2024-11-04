@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { superFetch } from "./helpers/utils";
-import type { UserAuth } from "../types/UserAuth";
+import type { UserAuth } from "@/server/types/UserAuth";
 
 const fetch = superFetch;
 
