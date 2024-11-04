@@ -4,10 +4,17 @@ import * as UserService from "./services/user.service";
 import { AuthError, NotFoundError } from "./exceptions/exceptions";
 
 import type { UserAuth } from "./types/UserAuth";
+import { requireAuth } from "./middlewares/requireAuth";
 
 const app = express();
 
 app.use(express.json());
+
+app.get("/", requireAuth, (_, res) => {
+  res.status(200).send({
+    message: "You've successfully authenticated.",
+  });
+});
 
 app.post("/register", (req, res) => {
   const userInfo: UserAuth = req.body;
