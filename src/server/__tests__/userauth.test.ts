@@ -1,10 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { makeFetch } from "supertest-fetch";
 
-import ViteExpress from "../server";
+import { superFetch } from "./helpers/utils";
 import type { UserAuth } from "../types/UserAuth";
 
-const fetch = makeFetch(ViteExpress);
+const fetch = superFetch;
 
 describe("User Auth:", () => {
   const user: UserAuth = { username: "Sars", password: "pass" };
