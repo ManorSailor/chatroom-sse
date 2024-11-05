@@ -1,9 +1,11 @@
 import express from "express";
 
 import * as UserService from "./services/user.service";
+import * as ChatroomService from "./services/chatroom.service";
 import { AuthError, NotFoundError } from "./exceptions/exceptions";
 
 import type { UserAuth } from "./types/UserAuth";
+import type { Message } from "./types/Message";
 import { requireAuth } from "./middlewares/requireAuth";
 
 const app = express();
@@ -44,6 +46,17 @@ app.post("/login", (req, res) => {
       res.status(403).send({ message: error.message });
     }
   }
+});
+
+app.post("/rooms/:roomId/messages", requireAuth, (req, res) => {
+  const { roomId } = req.params;
+  const message: Message = req.body;
+
+  ChatroomService.receiveMessage(roomId, message);
+
+  res.status(201).send({
+    message: "Message sent successfully.",
+  });
 });
 
 export default app;
