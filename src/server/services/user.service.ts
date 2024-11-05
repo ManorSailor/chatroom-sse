@@ -48,7 +48,7 @@ function login({ username, password }: UserAuth): AuthToken {
   });
 
   return {
-    token,
+    token: `Bearer ${token}`,
     expiresIn: A_DAY_IN_SECONDS,
   };
 }
