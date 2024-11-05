@@ -43,7 +43,7 @@ function login({ username, password }: UserAuth): AuthToken {
     throw new AuthError("Invalid password");
   }
 
-  const token = jwt.sign(user, SECRET_KEY, {
+  const token = jwt.sign({ id: user.id }, SECRET_KEY, {
     expiresIn: A_DAY_IN_SECONDS,
   });
 
