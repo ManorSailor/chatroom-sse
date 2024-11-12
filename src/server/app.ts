@@ -2,11 +2,14 @@ import express from "express";
 
 import * as UserService from "./services/user.service";
 import * as ChatroomService from "./services/chatroom.service";
+import * as MessageStream from "./services/messageStream.service";
+
+import { requireAuth } from "./middlewares/requireAuth";
 import { AuthError, NotFoundError } from "./exceptions/exceptions";
 
+import type { UUID } from "crypto";
 import type { UserAuth } from "./types/UserAuth";
 import type { Message } from "./types/Message";
-import { requireAuth } from "./middlewares/requireAuth";
 
 const app = express();
 
@@ -52,10 +55,29 @@ app.post("/rooms/:roomId/messages", requireAuth, (req, res) => {
   const { roomId } = req.params;
   const message: Message = req.body;
 
-  ChatroomService.receiveMessage(roomId, message);
+  const msg = ChatroomService.receiveMessage(roomId, message);
+  MessageStream.broadcast(roomId as UUID, msg);
 
   res.status(201).send({
     message: "Message sent successfully.",
+  });
+});
+
+app.get("/rooms/:roomId/stream", requireAuth, (req, res) => {
+  const { roomId } = req.params;
+
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Connection", "keep-alive");
+  res.setHeader("Cache-Control", "no-cache");
+  res.flushHeaders();
+
+  const unsubscribe = MessageStream.subscribe(roomId as UUID, (msg, event) =>
+    res.write(`id: ${msg.id}\nevent: ${event}\ndata: ${msg.content}\n\n`)
+  );
+
+  res.on("close", () => {
+    unsubscribe();
+    res.end();
   });
 });
 

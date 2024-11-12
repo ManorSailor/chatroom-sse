@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { describe, it, beforeAll } from "vitest";
+import { describe, it, beforeAll, expect } from "vitest";
 
 import { superFetch } from "./helpers/utils";
 
@@ -34,7 +34,10 @@ describe("Chatroom:", () => {
     ).json();
   });
 
-  it("should let an authenticated user send a message", async () => {
+  it.skip("should let an authenticated user join a room");
+  it.skip("should let an authenticated user join a room");
+
+  it("should let a group member send a message", async () => {
     await fetch(`/rooms/${defaultRoomId}/messages`, {
       method: "post",
       body: JSON.stringify(msg),
@@ -45,5 +48,31 @@ describe("Chatroom:", () => {
     })
       .expectStatus(201)
       .expectBody({ message: "Message sent successfully." });
+  });
+
+  it("should let group members receive messages", async () => {
+    const response = await fetch(`/rooms/${defaultRoomId}/stream`, {
+      method: "GET",
+      headers: { Authorization: authToken.token },
+    });
+
+    await fetch(`/rooms/${defaultRoomId}/messages`, {
+      method: "post",
+      body: JSON.stringify(msg),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authToken.token,
+      },
+    });
+
+    const reader = response.body?.getReader();
+    const decoder = new TextDecoder("utf-8");
+
+    expect(reader).toBeDefined();
+
+    const { value } = await reader!.read();
+    const receivedMsg = decoder.decode(value).split("\n").toString();
+
+    expect(receivedMsg).toMatch("data: Hello!");
   });
 });

@@ -3,7 +3,7 @@ import { randomUUID, type UUID } from "crypto";
 import * as MessageService from "./message.service";
 import { NotFoundError } from "@/server/exceptions/exceptions";
 
-import type { Message } from "@/server/types/Message";
+import type { Message, MessageModel } from "@/server/types/Message";
 import type { ChatroomModel } from "@/server/types/Chatroom";
 
 // TODO: Use db
@@ -18,7 +18,7 @@ rooms.push({
   members: new Set(),
 });
 
-function joinRoom(userId: UUID, roomId: UUID) {
+function joinRoom(roomId: UUID, userId: UUID) {
   const roomToJoin = rooms.find((r) => r.id === roomId);
 
   if (!roomToJoin) {
@@ -28,7 +28,7 @@ function joinRoom(userId: UUID, roomId: UUID) {
   roomToJoin.members.add(userId);
 }
 
-function receiveMessage(roomId: string, message: Message) {
+function receiveMessage(roomId: string, message: Message): MessageModel {
   const room = rooms.find((r) => r.id === roomId);
 
   if (!room) {
@@ -38,7 +38,7 @@ function receiveMessage(roomId: string, message: Message) {
   // TODO: Ensure message author is a member of group before saving the message
   // const isUserMember = room.members.has(message.authorId)
 
-  MessageService.addMessage(message);
+  return MessageService.addMessage(message);
 }
 
 export { joinRoom, receiveMessage };
