@@ -1,4 +1,4 @@
-import * as UserService from "@/server/services/user.service";
+import * as UserService from "@/server/services/user.services";
 import { AuthError, NotFoundError } from "@/server/exceptions/exceptions";
 
 import type { Request, Response } from "express";

@@ -1,5 +1,5 @@
-import * as ChatroomService from "@/server/services/chatroom.service";
-import * as MessageStream from "@/server/services/messageStream.service";
+import * as ChatroomService from "@/server/services/chatroom.services";
+import * as MessageStream from "@/server/services/messageStream.services";
 
 import type { UUID } from "crypto";
 import type { Request, Response } from "express";

@@ -1,6 +1,6 @@
 import { randomUUID, type UUID } from "crypto";
 
-import * as MessageService from "./message.service";
+import * as MessageService from "./message.services";
 import { NotFoundError } from "@/server/exceptions/exceptions";
 
 import type { Message, MessageModel } from "@/server/types/Message";
@@ -39,6 +39,10 @@ function receiveMessage(roomId: string, message: Message): MessageModel {
   // const isUserMember = room.members.has(message.authorId)
 
   return MessageService.addMessage(message);
+}
+
+function subscribeToRoom(roomId: UUID, userId: UUID, cb) {
+  
 }
 
 export { joinRoom, receiveMessage };
