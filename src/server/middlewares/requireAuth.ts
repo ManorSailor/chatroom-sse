@@ -8,7 +8,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
 
   jwt.verify(token ?? "", SECRET_KEY, (err, user) => {
     if (err) {
-      res.status(403).send({
+      res.status(401).send({
         message: "Unauthorized user. Access denied.",
       });
     }

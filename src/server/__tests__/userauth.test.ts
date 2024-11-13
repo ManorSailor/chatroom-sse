@@ -93,7 +93,7 @@ describe("User Auth:", () => {
 
   it("should not allow an unauthenticated user to access protected resource", async () => {
     await fetch("/")
-      .expectStatus(403)
+      .expectStatus(401)
       .expectBody({ message: "Unauthorized user. Access denied." });
   });
 });
